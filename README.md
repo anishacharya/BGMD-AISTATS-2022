@@ -1,4 +1,5 @@
-# BGMD
+# Robust Training in High Dimensions via Block Coordinate Geometric Median Descent
+
 Geometric median (GM) is a classical method in statistics for achieving a robust estimation
 of the uncorrupted data; under gross corruption, it achieves the optimal breakdown point of
 0.5. However, its computational complexity makes it infeasible for robustifying stochastic

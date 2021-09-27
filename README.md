@@ -2,6 +2,7 @@
 =================================================================================
 Anish Acharya, Abolfazl Hashemi, Prateek Jain, Sujay Sanghavi, Inderjit Dhillon, Ufuk Topcu.
 
+
 Abstract:
 ------------
 Geometric median (GM) is a classical method in statistics for achieving a robust estimation
@@ -13,6 +14,10 @@ a memory mechanism, one can retain the breakdown point of 0.5 for smooth non-con
 problems, with non-asymptotic convergence rates comparable to the SGD with GM.
 
 ![](https://github.com/anishacharya/BGMD/blob/main/bgmd_algo.png)
+![](https://github.com/anishacharya/BGMD/blob/main/bgmd_fig1.png)
+![](https://github.com/anishacharya/BGMD/blob/main/bgmd_fig2.png)
+![](https://github.com/anishacharya/BGMD/blob/main/bgmd_fig3.png)
+
 
 Citation  
 ------------

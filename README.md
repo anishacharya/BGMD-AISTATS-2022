@@ -14,14 +14,11 @@ problems, with non-asymptotic convergence rates comparable to the SGD with GM.
 
 ![](https://github.com/anishacharya/BGMD/blob/main/bgmd_algo.png)
 
-Convergence Guarantees
---------------------
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_conv_table.png)
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_theoru.png)
-
 ![](https://github.com/anishacharya/BGMD/blob/main/bgmd_fig1.png)
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_fig2.png)
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_fig3.png)
+
+![](https://github.com/anishacharya/BGMD/blob/main/bgmd_conv_table.png)
+
+![](https://github.com/anishacharya/BGMD/blob/main/bgmd_theoru.png)
 
 
 Citation  

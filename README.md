@@ -1,5 +1,9 @@
 [Robust Training in High Dimensions via Block Coordinate Geometric Median Descent](https://arxiv.org/pdf/2106.08882.pdf)
 =================================================================================
+Anish Acharya, Abolfazl Hashemi, Prateek Jain, Sujay Sanghavi, Inderjit Dhillon, Ufuk Topcu.
+
+Abstract:
+------------
 Geometric median (GM) is a classical method in statistics for achieving a robust estimation
 of the uncorrupted data; under gross corruption, it achieves the optimal breakdown point of
 0.5. However, its computational complexity makes it infeasible for robustifying stochastic
@@ -8,9 +12,11 @@ that by applying Gm to only a judiciously chosen block of coordinates at a time 
 a memory mechanism, one can retain the breakdown point of 0.5 for smooth non-convex
 problems, with non-asymptotic convergence rates comparable to the SGD with GM.
 
+![](https://github.com/anishacharya/BGMD/blob/main/bgmd_algo.png)
+
 Citation  
 ------------
-Kindly cite the following work:    
+Kindly cite the work as:    
 ```
 @article{acharya2021robust,
   title={Robust Training in High Dimensions via Block Coordinate Geometric Median Descent},

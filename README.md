@@ -12,16 +12,16 @@ that by applying Gm to only a judiciously chosen block of coordinates at a time 
 a memory mechanism, one can retain the breakdown point of 0.5 for smooth non-convex
 problems, with non-asymptotic convergence rates comparable to the SGD with GM.
 
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_algo.png)
+![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_algo.png)
 
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_fig1.png)
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_fig2.png)
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_fig3.png)
+![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_fig1.png)
+![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_fig2.png)
+![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_fig3.png)
 
 
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_conv_table.png)
+![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_conv_table.png)
 
-![](https://github.com/anishacharya/BGMD/blob/main/bgmd_theoru.png)
+![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_theoru.png)
 
 
 Citation  

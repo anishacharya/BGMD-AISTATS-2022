@@ -105,11 +105,11 @@ class TrainPipeline:
                    }
         return metrics
 
-    def run_train(self, config: Dict, seed):
+    def run_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
 
-    def run_batch_train(self, config: Dict, seed):
+    def run_batch_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
 
-    def run_fed_train(self, config: Dict, seed):
+    def run_fed_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")

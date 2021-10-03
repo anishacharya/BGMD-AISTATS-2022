@@ -22,14 +22,14 @@ class ActiveSamplingRobust(TrainPipeline):
         TrainPipeline.__init__(self, config=config, seed=seed)
         self.epoch = 0
 
-    def run_train(self, config: Dict, seed):
-        np.random.seed(seed)
-        torch.manual_seed(seed)
+    def run_train(self):
+        np.random.seed(self.seed)
+        torch.manual_seed(self.seed)
 
-    def run_batch_train(self, config: Dict, seed):
+    def run_batch_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
 
-    def run_fed_train(self, config: Dict, seed):
+    def run_fed_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
 
 

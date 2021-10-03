@@ -40,3 +40,44 @@ def get_optimizer(params, optimizer_config: Dict = None):
 
     else:
         raise NotImplementedError
+
+
+def get_scheduler(optimizer, lrs_config: Dict = None):
+    lrs = lrs_config.get('lrs')
+
+    if lrs == 'step':
+        return optim.lr_scheduler.StepLR(optimizer=optimizer,
+                                         step_size=lrs_config.get('step_size', 10),
+                                         gamma=lrs_config.get('gamma', 0.9))
+    elif lrs == 'multi_step':
+        return optim.lr_scheduler.MultiStepLR(optimizer=optimizer,
+                                              milestones=lrs_config.get('milestones', [100]),
+                                              gamma=lrs_config.get('gamma', 0.5),
+                                              last_epoch=lrs_config.get('last_epoch', -1))
+    elif lrs == 'exp':
+        return optim.lr_scheduler.ExponentialLR(optimizer=optimizer,
+                                                gamma=lrs_config.get('gamma', 0.5))
+    elif lrs == 'cosine':
+        return optim.lr_scheduler.CosineAnnealingLR(optimizer=optimizer, T_max=100)
+    elif lrs == 'cyclic':
+        max_lr = lrs_config.get('lr0', 0.001)
+        base_lr = 0.1 * max_lr
+        return optim.lr_scheduler.CyclicLR(optimizer=optimizer,
+                                           base_lr=base_lr,
+                                           max_lr=max_lr,
+                                           step_size_up=lrs_config.get('step_size_up', 100))
+    else:
+        return None
+
+
+def take_lrs_step(clients):
+    for client in clients:
+        if client.lrs:
+            client.lrs.step()
+
+    current_lr = clients[0].optimizer.param_groups[0]['lr']
+
+    if len(clients) > 1:
+        assert (clients[0].optimizer.param_groups[0]['lr'] == clients[1].optimizer.param_groups[0]['lr'])
+
+    return current_lr

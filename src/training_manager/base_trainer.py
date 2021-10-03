@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import math
 # from src.attack_manager import get_feature_attack, get_grad_attack
-from src.model_manager import get_model, get_optimizer
+from src.model_manager import get_model, get_optimizer, get_loss
 #                                get_scheduler,
 #                                get_loss)
 # from src.aggregation_manager import get_gar

@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 # results/*
+
 .ipynb_checkpoints/*
 venv/*
 x_train*
@@ -8,6 +9,7 @@ x_test*
 y_test*
 logs/*
 src/data_manager/data/*
+src/data_manager/glove.*
 embedding/*
 glove.*/
 glove.*.zip*

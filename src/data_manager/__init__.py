@@ -1,7 +1,7 @@
 from .vision_datasets import *
 
 
-def get_data_manager(data_config: Dict):
+def process_data(data_config: Dict):
     data_set = data_config["data_set"]
     if data_set == 'cifar10':
         return CIFAR10(data_config=data_config)

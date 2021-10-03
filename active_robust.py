@@ -1,13 +1,14 @@
 import torch
+from torch.utils.data import DataLoader
 import argparse
 import json
 import os
 import yaml
 import numpy as np
-from typing import Dict
 from numpyencoder import NumpyEncoder
 
 from src.training_manager import TrainPipeline
+from src.data_manager import process_data
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.deterministic = True
@@ -21,13 +22,23 @@ class ActiveSamplingRobust(TrainPipeline):
     def __init__(self, config, seed):
         TrainPipeline.__init__(self, config=config, seed=seed)
         self.epoch = 0
+        # ------------------------- get data --------------------- #
+        tr_batch_size = self.data_config.get('train_batch_size', 1)
+        test_batch_size = self.data_config.get('test_batch_size', 512)
+        data_manager = process_data(data_config=self.data_config)
+        train_dataset, val_dataset, test_dataset = data_manager.download_data()
+        # ------------------------- create data loader ------------- #
+        self.train_loader = DataLoader(dataset=train_dataset, batch_size=tr_batch_size, shuffle=True)
+        print('Num of Batches in Train Loader = {}'.format(len(self.train_loader)))
+        self.test_loader = DataLoader(dataset=test_dataset, batch_size=test_batch_size)
 
     def run_train(self):
         np.random.seed(self.seed)
         torch.manual_seed(self.seed)
 
     def run_batch_train(self):
-        raise NotImplementedError("This method needs to be implemented for each pipeline")
+        np.random.seed(self.seed)
+        torch.manual_seed(self.seed)
 
     def run_fed_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")

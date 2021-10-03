@@ -13,8 +13,7 @@ class VisionDataManager:
     Base Class for Vision Data Readers
     """
 
-    def __init__(self, data_config: Dict, transformation=None):
-        self.data_config = data_config
+    def __init__(self, transformation=None):
         self.transform = transformation
 
     def download_data(self):
@@ -35,8 +34,8 @@ class VisionDataManager:
 
 
 class MNIST(VisionDataManager):
-    def __init__(self, data_config: Dict):
-        VisionDataManager.__init__(self, data_config=data_config)
+    def __init__(self):
+        VisionDataManager.__init__(self)
 
     def download_data(self, seed=1):
         torch.manual_seed(seed)
@@ -53,8 +52,8 @@ class MNIST(VisionDataManager):
 
 
 class FashionMNIST(VisionDataManager):
-    def __init__(self, data_config: Dict):
-        VisionDataManager.__init__(self, data_config=data_config)
+    def __init__(self):
+        VisionDataManager.__init__(self)
 
     def download_data(self, seed=1):
         torch.manual_seed(seed)
@@ -71,8 +70,8 @@ class FashionMNIST(VisionDataManager):
 
 
 class ExtendedMNIST(VisionDataManager):
-    def __init__(self, data_config: Dict):
-        VisionDataManager.__init__(self, data_config=data_config)
+    def __init__(self):
+        VisionDataManager.__init__(self)
 
     def download_data(self, seed=1):
         torch.manual_seed(seed)
@@ -89,8 +88,8 @@ class ExtendedMNIST(VisionDataManager):
 
 
 class CIFAR10(VisionDataManager):
-    def __init__(self, data_config: Dict):
-        VisionDataManager.__init__(self, data_config=data_config)
+    def __init__(self):
+        VisionDataManager.__init__(self)
 
     def download_data(self):
         _train_dataset = datasets.CIFAR10(root=root, download=True)
@@ -106,8 +105,8 @@ class CIFAR10(VisionDataManager):
 
 
 class ImageNet(VisionDataManager):
-    def __init__(self, data_config: Dict):
-        VisionDataManager.__init__(self, data_config=data_config)
+    def __init__(self):
+        VisionDataManager.__init__(self)
 
     # noinspection PyTypeChecker
     def download_data(self):

@@ -1,4 +1,5 @@
 from .vision_datasets import *
+from .nlp_datasets import *
 
 
 def process_data(data_config: Dict):
@@ -13,6 +14,8 @@ def process_data(data_config: Dict):
         return ImageNet(data_config=data_config)
     elif data_set == 'extended_mnist':
         return ExtendedMNIST(data_config=data_config)
+    elif data_set == 'imdb':
+        return IMDB(data_config=data_config)
     else:
         raise NotImplemented
 

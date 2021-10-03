@@ -17,7 +17,7 @@
 
   "training_config":
   {
-    "epochs": 10,          # epochs
+    "global_epochs": 10,                 # epochs
     "eval_freq": 128,             # Specify number of steps between train/test/val evaluation
     "optimizer_config":
       {

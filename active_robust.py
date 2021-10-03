@@ -40,6 +40,10 @@ class ActiveSamplingRobust(TrainPipeline):
         np.random.seed(self.seed)
         torch.manual_seed(self.seed)
 
+        while self.epoch < self.num_epochs:
+            self.model.to(device)
+            self.model.train()
+
     def run_fed_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
 

@@ -5,6 +5,7 @@ import os
 import yaml
 import numpy as np
 from typing import Dict
+from numpyencoder import NumpyEncoder
 
 from src.training_manager import TrainPipeline
 
@@ -73,7 +74,7 @@ def run_main():
     for seed in np.arange(args.n_repeat):
         # ----- Launch Training ------ #
         train_mode = args.train_mode
-        trainer = ActiveSamplingSSL(config=config, seed=seed)
+        trainer = ActiveSamplingRobust(config=config, seed=seed)
 
         if train_mode == 'vanilla':
             # Launch Vanilla mini-batch Training

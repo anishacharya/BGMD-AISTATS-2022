@@ -1,4 +1,4 @@
-from .cnn import LeNet
+from .vision_cnn import LeNet
 from typing import Dict
 
 

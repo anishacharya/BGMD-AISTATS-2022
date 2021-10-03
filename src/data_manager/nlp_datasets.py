@@ -21,36 +21,26 @@ class NLPDataManager:
     Base Class for Vision Data Readers
     """
 
-    def __init__(self, data_config: Dict, transformation=None):
+    def __init__(self, data_config: Dict):
         self.data_config = data_config
-        self.transform = transformation
+        self.tr_batch_size = self.data_config.get('train_batch_size', 1)
+        self.test_batch_size = self.data_config.get('test_batch_size', 512)
 
-    def download_data(self):
+    def get_data_iterator(self):
         """ Downloads Data and Apply appropriate Transformations . returns train, test dataset """
         raise NotImplementedError("This method needs to be implemented")
 
-    @staticmethod
-    def _get_common_data_trans(_train_dataset):
-        """ Implements a simple way to compute train and test transform that usually works """
-        try:
-            mean = [_train_dataset.data.float().mean(axis=(0, 1, 2)) / 255]
-            std = [_train_dataset.data.float().std(axis=(0, 1, 2)) / 255]
-        except:
-            mean = _train_dataset.data.mean(axis=(0, 1, 2)) / 255
-            std = _train_dataset.data.std(axis=(0, 1, 2)) / 255
-
-        return mean, std
-
 
 class IMDB(NLPDataManager):
-    def __init__(self, data_config: Dict, transformation=None):
-        NLPDataManager.__init__(data_config=data_config, transformation=transformation)
+    def __init__(self, data_config: Dict):
+        NLPDataManager.__init__(self, data_config=data_config)
 
-    def download_data(self):
+    def get_data_iterator(self):
         train_data, test_data = datasets.IMDB.splits(TEXT, LABEL)
         TEXT.build_vocab(train_data,
                          max_size=MAX_VOCAB_SIZE,
                          vectors="glove.6B.100d",
                          unk_init=torch.Tensor.normal_)
         LABEL.build_vocab(train_data)
+
 

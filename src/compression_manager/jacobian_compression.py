@@ -83,8 +83,6 @@ class SparseApproxMatrix(JacobianCompression):
         if self.compression_rule not in ['active_norm_sampling', 'random_sampling']:
             raise NotImplementedError
 
-        G = self.memory_feedback(G=G, lr=lr)
-
         # for the first run compute k and residual error
         if self.k is None:
             self.n, self.d = G.shape
@@ -96,6 +94,8 @@ class SparseApproxMatrix(JacobianCompression):
             elif self.axis == 1:
                 self.k = int(self.frac * self.n) if self.frac > 0 else 1
                 print('Sampling {} samples out of {}'.format(self.k, self.n))
+
+        G = self.memory_feedback(G=G, lr=lr)
 
         # Invoke Sampling algorithm
         if self.compression_rule == 'active_norm_sampling':

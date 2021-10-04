@@ -9,8 +9,8 @@
     "num_labels": 10,                 # Num of Labels in Dataset
     "num_channels": 1,                # Number of channels # in case of CV experiments
 
-    "train_batch_size": 2,           # Mini Batch Size
-    "num_clients": 10,               # Number of mini-batches
+    "train_batch_size": 32,           # Mini Batch Size
+    "num_clients": 32,               # Number of mini-batches
 
     "test_batch_size": 2048,          # Test Batch Size
   },
@@ -18,7 +18,7 @@
   "training_config":
   {
     "global_epochs": 10,                 # epochs
-    "eval_freq": 128,             # Specify number of steps between train/test/val evaluation
+    "eval_freq": 128,                    # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {

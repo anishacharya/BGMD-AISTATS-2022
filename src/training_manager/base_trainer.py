@@ -93,6 +93,7 @@ class TrainPipeline:
 
         metrics["test_error"].append(test_error)
         metrics["test_acc"].append(test_acc)
+
         metrics["train_error"].append(train_error)
         metrics["train_loss"].append(train_loss)
         metrics["train_acc"].append(train_acc)
@@ -113,7 +114,7 @@ class TrainPipeline:
                 outputs = model(images)
 
                 # if criterion is not None:
-                loss = self.criterion(outputs, labels, evaluate=True)
+                loss = self.criterion(outputs, labels)
                 total_loss += loss.item()
 
                 batches += 1
@@ -134,6 +135,9 @@ class TrainPipeline:
 
                    # Train and Test Performance
                    "train_loss": [],
+                   "train_error": [],
+                   "train_acc": [],
+
                    "test_error": [],
                    "test_acc": [],
                    "best_test_acc": 0,

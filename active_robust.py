@@ -9,6 +9,7 @@ import time
 from numpyencoder import NumpyEncoder
 
 from src.training_manager import TrainPipeline
+from src.model_manager import flatten_grads, dist_grads_to_model
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.deterministic = True
@@ -33,6 +34,11 @@ class ActiveSamplingRobust(TrainPipeline):
         while self.epoch < self.num_epochs:
             self.model.to(device)
             self.model.train()
+            epoch_grad_cost = 0
+            epoch_agg_cost = 0
+            epoch_gm_iter = 0
+            epoch_compression_cost = 0
+
             # ------- Training Phase --------- #
             print('epoch {}/{} || learning rate: {}'.format(self.epoch,
                                                             self.num_epochs,
@@ -56,8 +62,20 @@ class ActiveSamplingRobust(TrainPipeline):
                 self.metrics["num_grad_steps"] += 1
                 # Note: No Optimizer Step yet.
                 g_i = flatten_grads(learner=self.model)
+                # Construct the Jacobian
+                if self.G is None:
+                    d = len(g_i)
+                    print("Num of Parameters {}".format(d))
+                    self.metrics["num_param"] = d
+                    self.G = np.zeros((self.num_batches, d), dtype=g_i.dtype)
 
+                ix = batch_ix % self.num_batches
+                agg_ix = (batch_ix + 1) % self.num_batches
+                self.G[ix, :] = g_i
+                iteration_time = time.time() - t_iter
+                epoch_grad_cost += iteration_time
 
+                p_bar.update()
 
     def run_fed_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")

@@ -4,7 +4,7 @@
   "seed": 1,
   "data_config":
   {
-    "data_set": "imdb",
+    "data_set": "mnist",
     "shape":[28,28],
 
     "val_frac": 0,                    # Fraction of Train Data used for Validation
@@ -24,11 +24,11 @@
 
     "optimizer_config":
       {
-        "loss": "infoNCE",   # Contrastive Loss
+        "loss": "ce",   # Contrastive Loss
         "loss_sampler": "top_loss",
         "init_sampling_frac": 0.1,
 
-        "optimizer": "SGD",
+        "optimizer": "Adam",
         "lr0": 0.01,
         "momentum": 0.9,
         "reg": 0.0001,
@@ -47,10 +47,36 @@
       {
         "net": "lenet",
       },
+    "aggregation_config":
+      {
+        "gar": "mean",
+        "geo_med_config": { "alg": 'vardi', 'eps': 0.00001, 'max_iter': 100 },
+        "trimmed_mean_config": { "proportion": 0.3 },
+        "krum_config": { "krum_frac": 0.3 },
+        "norm_clip_config": { "alpha": 0.5 },
+
+        "grad_attack_config":
+          {
+            "attack_model": 'additive',  # 'additive' , 'impulse', 'backdoor'
+            "attack_mode": "un_coordinated",
+            "frac_adv": 0.4,
+            "rand_additive_attack_conf":
+              {
+                "noise_dist": "gaussian",
+                "mean_shift": 0, "attack_std": 10,   # Gaussian noise
+                "noise_range": [ -1, 0 ],             # Uniform noise
+              },
+            "sign_flip_conf": { "flip_prob": 0.7, "flip_scale": 5 },
+            "attack_n_std": 1
+          },
+
+        "jacobian_compression_config":
+          {
+            "rule": 'active_norm_sampling',                     # None, 'active_norm_sampling', 'random_sampling'
+            "axis": "dim",                      # n = client/sample/batch selection ; dim = dimension selection
+            "sampling_fraction": 0.9,         # fraction to be sampled
+            "memory_algo": 'ef',              # memory in Jacobian - invoked for jacobian compression rules
+          }
+      }
   },
-
-  "fine_tune_config":
-    {
-
-    }
 }

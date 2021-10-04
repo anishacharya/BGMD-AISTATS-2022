@@ -18,6 +18,7 @@ class Mean(GAR):
     def aggregate(self, G: np.ndarray, ix: List[int] = None, axis=0) -> np.ndarray:
         # if ix given only aggregate along the indexes ignoring the rest of the ix
         t0 = time.time()
+
         if ix is not None:
             if axis == 0:
                 g_agg = np.zeros_like(G[0, :])

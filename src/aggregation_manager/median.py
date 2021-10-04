@@ -4,8 +4,6 @@ import numpy as np
 from .base_gar import GAR
 from typing import List, Dict
 from scipy.spatial.distance import cdist, euclidean
-import torch.optim as opt
-import torch.nn as nn
 import time
 
 

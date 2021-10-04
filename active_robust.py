@@ -77,7 +77,7 @@ class ActiveSamplingRobust(TrainPipeline):
 
                 p_bar.update()
 
-                if agg_ix == 0 and batch_ix is not 0:
+                if agg_ix == 0 and batch_ix != 0:
                     lr = self.optimizer.param_groups[0]['lr']
                     if self.C_J is not None:
                         t0 = time.time()

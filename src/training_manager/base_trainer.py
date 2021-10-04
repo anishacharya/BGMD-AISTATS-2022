@@ -30,9 +30,9 @@ class TrainPipeline:
 
         self.learner_config = self.training_config["learner_config"]
         self.optimizer_config = self.training_config.get("optimizer_config", {})
-
-        self.lrs_config = self.optimizer_config.get('lrs_config')
         self.loss_fn = self.optimizer_config.get('loss', 'ce')
+
+        self.lrs_config = self.training_config.get('lrs_config')
 
         self.aggregation_config = self.training_config["aggregation_config"]
         self.jac_compression_config = self.aggregation_config.get("jacobian_compression_config", {})

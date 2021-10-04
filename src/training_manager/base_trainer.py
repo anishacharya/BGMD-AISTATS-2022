@@ -3,9 +3,11 @@ import numpy as np
 import torch
 import math
 # from src.attack_manager import get_feature_attack, get_grad_attack
-from src.model_manager import get_model, get_optimizer, get_loss
-#                                get_scheduler,
-#                                get_loss)
+from src.model_manager import (get_model,
+                               get_optimizer,
+                               get_loss,
+                               get_scheduler,
+                               get_optimizer)
 # from src.aggregation_manager import get_gar
 # from src.compression_manager import get_compression_operator, get_jac_compression_operator
 

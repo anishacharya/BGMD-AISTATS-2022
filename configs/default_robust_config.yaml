@@ -10,7 +10,7 @@
     "num_channels": 1,                # Number of channels # in case of CV experiments
 
     "train_batch_size": 32,           # Mini Batch Size
-    "num_clients": 32,               # Number of mini-batches
+    "num_clients": 8,               # Number of mini-batches
 
     "test_batch_size": 2048,          # Test Batch Size
   },

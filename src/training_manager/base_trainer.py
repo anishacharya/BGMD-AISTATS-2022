@@ -32,8 +32,6 @@ class TrainPipeline:
 
         self.lrs_config = self.optimizer_config.get('lrs_config')
         self.loss_fn = self.optimizer_config.get('loss', 'ce')
-        # self.sampler = self.client_optimizer_config.get('loss_sampling', None)
-        # self.beta_loss = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
 
         self.aggregation_config = self.training_config["aggregation_config"]
         self.jac_compression_config = self.aggregation_config.get("jacobian_compression_config", {})

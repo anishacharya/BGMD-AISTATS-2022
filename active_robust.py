@@ -4,6 +4,8 @@ import json
 import os
 import yaml
 import numpy as np
+from tqdm import tqdm
+import time
 from numpyencoder import NumpyEncoder
 
 from src.training_manager import TrainPipeline
@@ -31,6 +33,31 @@ class ActiveSamplingRobust(TrainPipeline):
         while self.epoch < self.num_epochs:
             self.model.to(device)
             self.model.train()
+            # ------- Training Phase --------- #
+            print('epoch {}/{} || learning rate: {}'.format(self.epoch,
+                                                            self.num_epochs,
+                                                            self.optimizer.param_groups[0]['lr']))
+            p_bar = tqdm(total=len(self.train_loader))
+            p_bar.set_description("Training Progress: ")
+
+            for batch_ix, (images, labels) in enumerate(self.train_loader):
+                self.metrics["num_iter"] += 1
+                t_iter = time.time()
+
+                # Forward Pass
+                images = images.to(device)
+                labels = labels.to(device)
+                outputs = self.model(images)
+                self.optimizer.zero_grad()
+                loss = self.criterion(outputs, labels)
+
+                # compute grad
+                loss.backward()
+                self.metrics["num_grad_steps"] += 1
+                # Note: No Optimizer Step yet.
+                g_i = flatten_grads(learner=self.model)
+
+
 
     def run_fed_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")

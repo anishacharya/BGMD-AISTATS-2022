@@ -2,21 +2,23 @@ from torch import optim
 from .loss_functions import *
 from .vision_cnn import *
 from .fasttext import *
-
+import torch
 import torch.nn as nn
+import functools
+import numpy as np
 from typing import Dict
 
 
 def get_loss(loss_fn: str):
     """ returns: per sample loss """
     if loss_fn == 'mse':
-        return nn.MSELoss(reduction='none')
+        return nn.MSELoss()
     elif loss_fn == 'ce':
-        return nn.CrossEntropyLoss(reduction='none')
+        return nn.CrossEntropyLoss()
     elif loss_fn == 'bce':
-        return nn.BCELoss(reduction='none')
+        return nn.BCELoss()
     elif loss_fn == 'bce_logit':
-        return nn.BCEWithLogitsLoss(reduction='none')
+        return nn.BCEWithLogitsLoss()
     else:
         raise NotImplementedError
 
@@ -110,3 +112,55 @@ def take_lrs_step(clients):
         assert (clients[0].optimizer.param_groups[0]['lr'] == clients[1].optimizer.param_groups[0]['lr'])
 
     return current_lr
+
+
+def zero_grad(learner):
+    """Given a model clear hem grads; inspired by PyTorch optimizer.zero_grad"""
+    for w in learner.parameters():
+        if w.grad is not None:
+            w.grad.detach_()
+            w.grad.zero_()
+
+
+def flatten_params(learner) -> np.ndarray:
+    """ Given a model flatten hem params and return as np array """
+    flat_param = []
+    # for w in learner.parameters():
+    flat_param.extend(torch.reshape(w.data, (-1,)).tolist() for w in learner.parameters())
+    return np.asarray(flat_param)
+    # flat_param = np.concatenate([w.data.cpu().numpy().flatten() for w in learner.parameters()])
+    # return flat_param
+
+
+def flatten_grads(learner) -> np.ndarray:
+    """ Given a model flatten hem params and return as np array """
+    # flat_grad = []
+    # for w in learner.parameters():
+    # flat_grad.extend(torch.reshape(w.grad.data, (-1,)).numpy() for w in learner.parameters())
+    # return np.asarray(flat_grad)
+    flat_grad = np.concatenate([w.grad.data.cpu().numpy().flatten() for w in learner.parameters()])
+    return flat_grad
+
+
+def dist_weights_to_model(weights, learner):
+    """ Given Weights and a model architecture this method updates the model parameters with the supplied weights """
+    parameters = learner.parameters()
+    offset = 0
+    for param in parameters:
+        new_size = functools.reduce(lambda x, y: x * y, param.shape)
+        current_data = weights[offset:offset + new_size]
+        param.data[:] = torch.from_numpy(current_data.reshape(param.shape))
+        offset += new_size
+
+
+def dist_grads_to_model(grads, learner):
+    """ Given Gradients and a model architecture this method updates the model gradients (Corresponding to each param)
+    with the supplied grads """
+    parameters = learner.parameters()
+    # grads.to(learner.device)
+    offset = 0
+    for param in parameters:
+        new_size = functools.reduce(lambda x, y: x * y, param.shape)
+        current_data = grads[offset:offset + new_size]
+        param.grad = torch.from_numpy(current_data.reshape(param.shape)).to(param.device)
+        offset += new_size

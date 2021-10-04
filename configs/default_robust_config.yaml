@@ -26,9 +26,9 @@
         "init_sampling_frac": 0.1,
 
         "optimizer": "Adam",
-        "lr0": 0.001,
+        "lr0": 0.002,
         "momentum": 0.9,
-        "reg": 0.0001,
+        "reg": 0.00001,
         "nesterov": true,
         "amsgrad": false
       },
@@ -69,9 +69,9 @@
 
         "jacobian_compression_config":
           {
-            "rule": 'active_norm_sampling',                     # None, 'active_norm_sampling', 'random_sampling'
+            "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
             "axis": "dim",                      # n = client/sample/batch selection ; dim = dimension selection
-            "sampling_fraction": 0.9,         # fraction to be sampled
+            "sampling_fraction": 0.5,         # fraction to be sampled
             "memory_algo": 'ef',              # memory in Jacobian - invoked for jacobian compression rules
           }
       }

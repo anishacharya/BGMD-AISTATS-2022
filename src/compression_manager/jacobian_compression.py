@@ -46,8 +46,6 @@ class JacobianCompression:
 
     def memory_feedback(self, G: np.ndarray, lr=1) -> np.ndarray:
         """ Chosen Form of memory is added to Jacobian as feedback """
-        if self.n is None or self.d is None:
-            self.n, self.d = G.shape
 
         if not self.memory_algo:
             return G

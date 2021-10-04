@@ -106,22 +106,6 @@ class ActiveSamplingRobust(TrainPipeline):
                     self.optimizer.step()
                     self.metrics["num_opt_steps"] += 1
 
-                # if self.metrics["num_grad_steps"] % self.eval_freq == 0:
-                train_loss = self.evaluate_classifier(model=self.model,
-                                                          train_loader=self.train_loader,
-                                                          test_loader=self.test_loader,
-                                                          metrics=self.metrics,
-                                                          device=device,
-                                                          epoch=self.epoch,
-                                                          num_epochs=self.num_epochs)
-                # Stop if diverging
-                if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
-                    self.epoch = self.num_epochs
-
-                self.epoch += 1
-                if self.lrs is not None:
-                    self.lrs.step()
-
                 self.metrics["epoch_grad_cost"].append(epoch_grad_cost)
                 self.metrics["epoch_agg_cost"].append(epoch_agg_cost)
                 if epoch_gm_iter > 0:
@@ -130,6 +114,20 @@ class ActiveSamplingRobust(TrainPipeline):
                     # print("Epoch Sparse Approx Cost: {}".format(epoch_sparse_cost))
                     self.metrics["epoch_compression_cost"].append(epoch_compression_cost)
 
+            train_loss = self.evaluate_classifier(model=self.model,
+                                                  train_loader=self.train_loader,
+                                                  test_loader=self.test_loader,
+                                                  metrics=self.metrics,
+                                                  device=device,
+                                                  epoch=self.epoch,
+                                                  num_epochs=self.num_epochs)
+            # Stop if diverging
+            if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
+                self.epoch = self.num_epochs
+
+            self.epoch += 1
+            if self.lrs is not None:
+                self.lrs.step()
             # Update Total Complexities
             self.metrics["total_grad_cost"] = sum(self.metrics["epoch_grad_cost"])
             self.metrics["total_agg_cost"] = sum(self.metrics["epoch_agg_cost"])

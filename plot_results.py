@@ -59,14 +59,9 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
         x_freq = int(tot_cost / len(mean))
         x = np.arange(len(mean)) * x_freq
 
-    elif x_axis == 'steps':
+    elif x_axis == 'epochs':
         x = np.arange(len(result[0][plt_type]))[::plot_freq]
         x *= eval_freq
-
-    elif x_axis == 'samples':
-        x = np.arange(len(result[0][plt_type]))[::plot_freq]
-        x *= eval_freq
-        x *= batch_size
 
     else:
         raise NotImplementedError

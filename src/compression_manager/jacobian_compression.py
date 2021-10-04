@@ -22,8 +22,10 @@ class JacobianCompression:
     """
     def __init__(self, conf):
         self.conf = conf
+
         self.compression_rule = self.conf.get('rule', None)
         self.memory_algo = self.conf.get('memory_algo', None)
+
         axis = self.conf.get('axis', 'dim')  # 0: column / dimension , 1: row / samples(clients)
         if axis == 'dim':
             self.axis = 0

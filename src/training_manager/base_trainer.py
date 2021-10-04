@@ -9,7 +9,7 @@ from src.model_manager import (get_model,
                                get_optimizer)
 from src.data_manager import process_data
 # from src.aggregation_manager import get_gar
-# from src.compression_manager import get_compression_operator, get_jac_compression_operator
+from src.compression_manager import get_jac_compression_operator
 
 
 class TrainPipeline:
@@ -63,8 +63,8 @@ class TrainPipeline:
                                  lrs_config=self.lrs_config)
 
         # # Compression Operator
-        # self.C_J = get_jac_compression_operator(jac_compression_config=self.jac_compression_config)
-        # self.I_k = None  # indices when sparse approx Jac to run aggregation faster
+        self.C_J = get_jac_compression_operator(jac_compression_config=self.jac_compression_config)
+        self.I_k = None  # indices when sparse approx Jac to run aggregation faster
 
         # self.gar = get_gar(aggregation_config=self.aggregation_config)
         # self.G = None

@@ -81,12 +81,16 @@ class ActiveSamplingRobust(TrainPipeline):
                     lr = self.optimizer.param_groups[0]['lr']
                     if self.C_J is not None:
                         t0 = time.time()
-                        self.G, self.I_k = self.C_J.compress(G=self.G, lr=lr)
+                        self.I_k = self.C_J.compress(G=self.G, lr=lr)
                         epoch_compression_cost += time.time() - t0
                         self.metrics["jacobian_residual"].append(self.C_J.normalized_residual)
+                        # Gradient aggregation - get aggregated gradient vector
+                        agg_g = self.gar.aggregate(G=self.C_J.G_sparse,
+                                                   ix=self.I_k,
+                                                   axis=self.C_J.axis)
+                    else:
+                        agg_g = self.gar.aggregate(G=self.G, ix=self.I_k, axis=0)
 
-                    # Gradient aggregation - get aggregated gradient vector
-                    agg_g = self.gar.aggregate(G=self.G, ix=self.I_k, axis=self.C_J.axis if self.C_J else 0)
                     epoch_gm_iter += self.gar.num_iter
                     epoch_agg_cost += self.gar.agg_time
                     # Reset GAR stats

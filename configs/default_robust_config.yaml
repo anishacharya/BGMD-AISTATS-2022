@@ -4,7 +4,7 @@
   "seed": 1,
   "data_config":
   {
-    "data_set": "mnist",
+    "data_set": "fashion_mnist",
     "shape":[28,28],
     "num_labels": 10,                 # Num of Labels in Dataset
     "num_channels": 1,                # Number of channels # in case of CV experiments
@@ -35,7 +35,7 @@
 
     "lrs_config":
       {
-        "lrs": null,
+        "lrs": "step",
         "milestones": [1,5,10],
         "step_size": 1,
         "gamma": 0.9
@@ -69,7 +69,7 @@
 
         "jacobian_compression_config":
           {
-            "rule": 'active_norm_sampling',                     # None, 'active_norm_sampling', 'random_sampling'
+            "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
             "axis": "dim",                      # n = client/sample/batch selection ; dim = dimension selection
             "sampling_fraction": 0.3,         # fraction to be sampled
             "memory_algo": null,              # memory in Jacobian - invoked for jacobian compression rules

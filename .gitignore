@@ -14,6 +14,8 @@ embedding/*
 glove.*/
 glove.*.zip*
 lexsub/data/
+
+.idea/*
 data/
 .idea/
 *.DS_Store

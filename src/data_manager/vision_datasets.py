@@ -18,7 +18,7 @@ class VisionDataManager:
         self.data_config = data_config
         self.additional_model_conf = {}
 
-    def download_data(self):
+    def get_data_iterator(self):
         """ Downloads Data and Apply appropriate Transformations . returns train, test dataset """
         raise NotImplementedError("This method needs to be implemented")
 
@@ -39,7 +39,7 @@ class MNIST(VisionDataManager):
     def __init__(self, data_config):
         VisionDataManager.__init__(self, data_config=data_config)
 
-    def download_data(self, seed=1):
+    def get_data_iterator(self, seed=1):
         torch.manual_seed(seed)
         _train_dataset = datasets.MNIST(root=root, download=True)
 
@@ -66,7 +66,7 @@ class FashionMNIST(VisionDataManager):
     def __init__(self, data_config):
         VisionDataManager.__init__(self, data_config=data_config)
 
-    def download_data(self, seed=1):
+    def get_data_iterator(self, seed=1):
         torch.manual_seed(seed)
         _train_dataset = datasets.FashionMNIST(root=root, download=True)
 

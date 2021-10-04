@@ -3,7 +3,6 @@ from torchtext.legacy import data, datasets
 from typing import Dict
 
 SEED = 1234
-MAX_VOCAB_SIZE = 25_000
 
 torch.manual_seed(SEED)
 torch.backends.cudnn.deterministic = True
@@ -30,14 +29,15 @@ class NLPDataManager:
         raise NotImplementedError("This method needs to be implemented")
 
 
-class IMDB(NLPDataManager):
+class SST(NLPDataManager):
     def __init__(self, data_config: Dict):
+        self.MAX_VOCAB_SIZE = 10000
         NLPDataManager.__init__(self, data_config=data_config)
 
     def get_data_iterator(self):
-        train_data, test_data = datasets.IMDB.splits(TEXT, LABEL)
+        train_data, test_data = datasets.SST.splits(TEXT, LABEL)
         TEXT.build_vocab(train_data,
-                         max_size=MAX_VOCAB_SIZE,
+                         max_size=self.MAX_VOCAB_SIZE,
                          vectors="glove.6B.100d",
                          unk_init=torch.Tensor.normal_)
         LABEL.build_vocab(train_data)
@@ -47,8 +47,8 @@ class IMDB(NLPDataManager):
         self.additional_model_conf['output_dim'] = 1
         self.additional_model_conf['pad_idx'] = TEXT.vocab.stoi[TEXT.pad_token]
 
-        train_loader = data.BucketIterator.splits(train_data, batch_size=self.tr_batch_size)
-        test_loader = data.BucketIterator.splits(test_data, batch_size=self.test_batch_size)
+        train_loader, test_loader = data.BucketIterator.splits((train_data, test_data), batch_size=self.tr_batch_size)
+        # test_loader = data.BucketIterator.splits(test_data, batch_size=self.test_batch_size)
 
         return train_loader, test_loader
 

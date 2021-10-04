@@ -36,8 +36,6 @@ class TrainPipeline:
         # self.beta_loss = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
 
         self.aggregation_config = self.training_config["aggregation_config"]
-
-        # self.grad_compression_config = self.aggregation_config.get("gradient_compression_config", {})
         self.jac_compression_config = self.aggregation_config.get("jacobian_compression_config", {})
 
         self.grad_attack_config = self.aggregation_config.get("grad_attack_config", {})
@@ -52,7 +50,7 @@ class TrainPipeline:
 
         self.epoch = 0
         data_manager = process_data(data_config=self.data_config)
-        self.train_loader, self.test_loader = data_manager.download_data()
+        self.train_loader, self.test_loader = data_manager.get_data_iterator()
 
         self.model = get_model(learner_config=self.learner_config,
                                data_config=self.data_config,
@@ -65,13 +63,11 @@ class TrainPipeline:
                                               optimizer_config=self.optimizer_config)
         self.lrs = get_scheduler(optimizer=self.optimizer,
                                  lrs_config=self.lrs_config)
-        #
+
         # # Compression Operator
         # self.C_J = get_jac_compression_operator(jac_compression_config=self.jac_compression_config)
         # self.I_k = None  # indices when sparse approx Jac to run aggregation faster
-        #
-        # self.C_g = get_compression_operator(compression_config=self.grad_compression_config)
-        #
+
         # self.gar = get_gar(aggregation_config=self.aggregation_config)
         # self.G = None
         #
@@ -86,13 +82,11 @@ class TrainPipeline:
 
                    # Train and Test Performance
                    "train_loss": [],
-                   "fine_tune_loss": [],
                    "test_error": [],
                    "test_acc": [],
                    "best_test_acc": 0,
 
                    # Compression related residuals
-                   "gradient_residual": [],
                    "jacobian_residual": [],
 
                    # compute Time stats per epoch

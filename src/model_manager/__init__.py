@@ -15,6 +15,8 @@ def get_loss(loss_fn: str):
         return nn.CrossEntropyLoss(reduction='none')
     elif loss_fn == 'bce':
         return nn.BCELoss(reduction='none')
+    elif loss_fn == 'bce_logit':
+        return nn.BCEWithLogitsLoss(reduction='none')
     else:
         raise NotImplementedError
 

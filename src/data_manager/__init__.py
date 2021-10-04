@@ -15,7 +15,7 @@ def process_data(data_config: Dict):
     # elif data_set == 'extended_mnist':
     #     return ExtendedMNIST(data_config=data_config)
     elif data_set == 'sst':
-        return IMDB(data_config=data_config)
+        return SST(data_config=data_config)
     else:
         raise NotImplemented
 

@@ -1,5 +1,4 @@
 import torch
-from torch.utils.data import DataLoader
 import argparse
 import json
 import os
@@ -8,7 +7,6 @@ import numpy as np
 from numpyencoder import NumpyEncoder
 
 from src.training_manager import TrainPipeline
-from src.data_manager import process_data
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.deterministic = True
@@ -42,7 +40,7 @@ def _parse_args():
     parser = argparse.ArgumentParser(description='federated/decentralized/distributed training experiment template')
     parser.add_argument('--train_mode',
                         type=str,
-                        default='vanilla',
+                        default='distributed',
                         help='vanilla: launch regular batch sgd'
                              'distributed: launch distributed Training '
                              'fed: launch federated training')
@@ -83,10 +81,12 @@ def run_main():
 
         if train_mode == 'vanilla':
             # Launch Vanilla mini-batch Training
-            trainer.run_train(config=config, seed=seed)
-            results.append(trainer.metrics)
+            trainer.run_train()
+        elif train_mode == 'distributed':
+            trainer.run_batch_train()
         else:
             raise NotImplementedError
+        results.append(trainer.metrics)
 
     # Write Results #
     # ----------------

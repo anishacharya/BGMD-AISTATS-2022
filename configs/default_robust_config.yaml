@@ -35,6 +35,7 @@
         "nesterov": true,
         "amsgrad": false
       },
+
     "lrs_config":
       {
         "lrs": 'step',

@@ -4,7 +4,6 @@ import torch
 import math
 # from src.attack_manager import get_feature_attack, get_grad_attack
 from src.model_manager import (get_model,
-                               get_optimizer,
                                get_loss,
                                get_scheduler,
                                get_optimizer)
@@ -30,15 +29,14 @@ class TrainPipeline:
 
         self.learner_config = self.training_config["learner_config"]
         self.optimizer_config = self.training_config.get("optimizer_config", {})
-        self.client_optimizer_config = self.optimizer_config.get("client_optimizer_config", {})
-        self.client_lrs_config = self.optimizer_config.get('client_lrs_config')
 
-        # self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
+        self.lrs_config = self.optimizer_config.get('lrs_config')
+        self.loss_fn = self.optimizer_config.get('loss', 'ce')
         # self.sampler = self.client_optimizer_config.get('loss_sampling', None)
         # self.beta_loss = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
 
         self.aggregation_config = self.training_config["aggregation_config"]
-        #
+
         # self.grad_compression_config = self.aggregation_config.get("gradient_compression_config", {})
         self.jac_compression_config = self.aggregation_config.get("jacobian_compression_config", {})
 
@@ -61,10 +59,12 @@ class TrainPipeline:
                                seed=seed,
                                additional_conf=data_manager.additional_model_conf)
 
-        self.client_optimizer = get_optimizer(params=self.model.parameters(),
-                                              optimizer_config=self.client_optimizer_config)
-        # self.client_lrs = get_scheduler(optimizer=self.client_optimizer,
-        #                                 lrs_config=self.client_lrs_config)
+        self.criterion = get_loss(loss_fn=self.loss_fn)
+
+        self.optimizer = get_optimizer(params=self.model.parameters(),
+                                              optimizer_config=self.optimizer_config)
+        self.lrs = get_scheduler(optimizer=self.optimizer,
+                                 lrs_config=self.lrs_config)
         #
         # # Compression Operator
         # self.C_J = get_jac_compression_operator(jac_compression_config=self.jac_compression_config)

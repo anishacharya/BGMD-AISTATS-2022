@@ -1,8 +1,6 @@
 import torch
-from torchtext.legacy import data
-from torchtext.legacy import datasets
+from torchtext.legacy import data, datasets
 from typing import Dict
-import random
 
 SEED = 1234
 MAX_VOCAB_SIZE = 25_000
@@ -42,5 +40,10 @@ class IMDB(NLPDataManager):
                          vectors="glove.6B.100d",
                          unk_init=torch.Tensor.normal_)
         LABEL.build_vocab(train_data)
+
+        train_loader = data.BucketIterator.splits(train_data, batch_size=self.tr_batch_size)
+        test_loader = data.BucketIterator.splits(test_data, batch_size=self.test_batch_size)
+
+        return train_loader, test_loader
 
 

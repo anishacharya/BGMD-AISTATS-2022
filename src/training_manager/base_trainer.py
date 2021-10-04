@@ -22,7 +22,8 @@ class TrainPipeline:
         self.training_config = config["training_config"]
 
         self.train_batch_size = self.data_config.get('train_batch_size')
-        # self.num_batches = self.training_config.get('num_clients', 1)
+        self.num_batches = self.data_config.get('num_clients', 1)
+
         self.num_epochs = self.training_config.get('global_epochs', 10)
         self.eval_freq = self.training_config.get('eval_freq', 10)
 

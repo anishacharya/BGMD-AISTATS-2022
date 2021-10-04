@@ -4,7 +4,7 @@
   "seed": 1,
   "data_config":
   {
-    "data_set": "stl10",
+    "data_set": "imdb",
     "shape":[28,28],
 
     "val_frac": 0,                    # Fraction of Train Data used for Validation
@@ -12,6 +12,8 @@
     "num_channels": 1,                # Number of channels # in case of CV experiments
 
     "train_batch_size": 2,           # Mini Batch Size
+    "num_clients": 10,               # Number of mini-batches
+
     "test_batch_size": 2048,          # Test Batch Size
   },
 
@@ -19,6 +21,7 @@
   {
     "global_epochs": 10,                 # epochs
     "eval_freq": 128,             # Specify number of steps between train/test/val evaluation
+
     "optimizer_config":
       {
         "loss": "infoNCE",   # Contrastive Loss
@@ -41,7 +44,7 @@
       },
     "learner_config":
       {
-        "net": "simclr",
+        "net": "lenet",
       },
   },
 

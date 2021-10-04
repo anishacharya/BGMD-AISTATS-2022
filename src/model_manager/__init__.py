@@ -1,9 +1,10 @@
-from .model_helper import *
 from torch import optim
 from .loss_functions import *
 from .vision_cnn import *
+from .fasttext import *
 
 import torch.nn as nn
+from typing import Dict
 
 
 def get_loss(loss: str):
@@ -16,6 +17,30 @@ def get_loss(loss: str):
         return nn.BCELoss(reduction='none')
     else:
         raise NotImplementedError
+
+
+def get_model(learner_config: Dict, data_config: Dict, seed=1):
+    """ wrapper to return appropriate model class """
+    net = learner_config.get("net", 'lenet')
+    print('Loading Model: {}'.format(net))
+    print('----------------------------')
+
+    if net == 'lenet':
+        nc = data_config.get("num_channels", 1)
+        shape = data_config.get("shape", [28, 28])
+        model = LeNet(nc=nc, nh=shape[0], hw=shape[1], num_classes=data_config["num_labels"], seed=seed)
+    elif net == 'fasttext':
+        fasttext_conf = learner_config.get('fasttext_conf')
+        vs = fasttext_conf.get('vocab_size')
+        ed = fasttext_conf.get('embedding_dim')
+        od = fasttext_conf.get('output_dim')
+        px = fasttext_conf.get('pad_idx')
+        model = FastText(vocab_size=vs, embedding_dim=ed, output_dim=od, pad_idx=px)
+    else:
+        raise NotImplementedError
+
+    print(model)
+    return model
 
 
 def get_optimizer(params, optimizer_config: Dict = None):

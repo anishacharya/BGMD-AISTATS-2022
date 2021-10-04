@@ -1,5 +1,5 @@
 from .vision_datasets import *
-from .nlp_datasets import *
+# from .nlp_datasets import *
 
 
 def process_data(data_config: Dict):
@@ -10,12 +10,8 @@ def process_data(data_config: Dict):
         return MNIST(data_config=data_config)
     elif data_set == 'fashion_mnist':
         return FashionMNIST(data_config=data_config)
-    # elif data_set == 'imagenet':
-    #     return ImageNet(data_config=data_config)
-    # elif data_set == 'extended_mnist':
-    #     return ExtendedMNIST(data_config=data_config)
-    elif data_set == 'sst':
-        return SST(data_config=data_config)
+    # elif data_set == 'sst':
+    #     return SST(data_config=data_config)
     else:
         raise NotImplemented
 

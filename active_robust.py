@@ -21,9 +21,6 @@ class ActiveSamplingRobust(TrainPipeline):
     """
     def __init__(self, config, seed):
         TrainPipeline.__init__(self, config=config, seed=seed)
-        self.epoch = 0
-        data_manager = process_data(data_config=self.data_config)
-        self.train_loader, self.test_loader = data_manager.download_data()
 
     def run_train(self):
         np.random.seed(self.seed)

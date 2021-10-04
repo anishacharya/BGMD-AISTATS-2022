@@ -23,6 +23,7 @@ class NLPDataManager:
         self.data_config = data_config
         self.tr_batch_size = self.data_config.get('train_batch_size', 1)
         self.test_batch_size = self.data_config.get('test_batch_size', 512)
+        self.additional_model_conf = {}
 
     def get_data_iterator(self):
         """ Downloads Data and Apply appropriate Transformations . returns train, test dataset """
@@ -40,6 +41,11 @@ class IMDB(NLPDataManager):
                          vectors="glove.6B.100d",
                          unk_init=torch.Tensor.normal_)
         LABEL.build_vocab(train_data)
+
+        self.additional_model_conf['vocab_size'] = len(TEXT.vocab)
+        self.additional_model_conf['embedding_dim'] = self.data_config.get('embedding_dim', 100)
+        self.additional_model_conf['output_dim'] = 1
+        self.additional_model_conf['pad_idx'] = TEXT.vocab.stoi[TEXT.pad_token]
 
         train_loader = data.BucketIterator.splits(train_data, batch_size=self.tr_batch_size)
         test_loader = data.BucketIterator.splits(test_data, batch_size=self.test_batch_size)

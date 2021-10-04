@@ -8,6 +8,7 @@ from src.model_manager import (get_model,
                                get_loss,
                                get_scheduler,
                                get_optimizer)
+from src.data_manager import process_data
 # from src.aggregation_manager import get_gar
 # from src.compression_manager import get_compression_operator, get_jac_compression_operator
 
@@ -33,16 +34,16 @@ class TrainPipeline:
         self.client_lrs_config = self.optimizer_config.get('client_lrs_config')
 
         # self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
-        self.sampler = self.client_optimizer_config.get('loss_sampling', None)
-        self.beta_loss = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
+        # self.sampler = self.client_optimizer_config.get('loss_sampling', None)
+        # self.beta_loss = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
 
-        # self.aggregation_config = self.training_config["aggregation_config"]
+        self.aggregation_config = self.training_config["aggregation_config"]
         #
         # self.grad_compression_config = self.aggregation_config.get("gradient_compression_config", {})
-        # self.jac_compression_config = self.aggregation_config.get("jacobian_compression_config", {})
+        self.jac_compression_config = self.aggregation_config.get("jacobian_compression_config", {})
 
-        # self.grad_attack_config = self.aggregation_config.get("grad_attack_config", {})
-        # self.feature_attack_config = self.data_config.get("feature_attack_config", {})
+        self.grad_attack_config = self.aggregation_config.get("grad_attack_config", {})
+        self.feature_attack_config = self.data_config.get("feature_attack_config", {})
 
         # ------------------------ initializations ----------------------- #
         self.metrics = self.init_metric()
@@ -50,7 +51,13 @@ class TrainPipeline:
         np.random.seed(seed)
         torch.manual_seed(seed)
         self.net = self.learner_config.get("net", 'lenet')
+
+        self.epoch = 0
+        data_manager = process_data(data_config=self.data_config)
+        self.train_loader, self.test_loader = data_manager.download_data()
+
         self.model = get_model(learner_config=self.learner_config,
+                               data_config=self.data_config,
                                seed=seed)
         self.client_optimizer = get_optimizer(params=self.model.parameters(),
                                               optimizer_config=self.client_optimizer_config)

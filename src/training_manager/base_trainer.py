@@ -1,6 +1,7 @@
 from typing import Dict
 import numpy as np
 import torch
+import time
 import math
 # from src.attack_manager import get_feature_attack, get_grad_attack
 from src.model_manager import (get_model,
@@ -72,7 +73,59 @@ class TrainPipeline:
         # self.grad_attack_model = get_grad_attack(attack_config=self.grad_attack_config)
 
     def apply_gar(self):
-        pass
+        raise NotImplementedError
+
+    def evaluate_classifier(self,
+                            epoch: int,
+                            num_epochs: int,
+                            model,
+                            train_loader,
+                            test_loader,
+                            metrics,
+                            device="cpu") -> float:
+        train_error, train_acc, train_loss = self._evaluate(model=model, data_loader=train_loader, device=device)
+        test_error, test_acc, _ = self._evaluate(model=model, data_loader=test_loader, device=device)
+
+        if test_acc > metrics["best_test_acc"]:
+            metrics["best_test_acc"] = test_acc
+        print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}, best acc ={}'.
+              format(epoch, num_epochs, train_loss, train_acc, test_acc, metrics["best_test_acc"]))
+
+        metrics["test_error"].append(test_error)
+        metrics["test_acc"].append(test_acc)
+        metrics["train_error"].append(train_error)
+        metrics["train_loss"].append(train_loss)
+        metrics["train_acc"].append(train_acc)
+
+        return train_loss
+
+    def _evaluate(self, model, data_loader, verbose=False, device="cpu"):
+        model.to(device)
+        with torch.no_grad():
+            correct = 0
+            total = 0
+            total_loss = 0
+            batches = 0
+
+            for images, labels in data_loader:
+                images = images.to(device)
+                labels = labels.to(device)
+                outputs = model(images)
+
+                # if criterion is not None:
+                loss = self.criterion(outputs, labels, evaluate=True)
+                total_loss += loss.item()
+
+                batches += 1
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
+
+            acc = 100 * correct / total
+            total_loss /= batches
+            if verbose:
+                print('Accuracy: {} %'.format(acc))
+            return 100 - acc, acc, total_loss
 
     def init_metric(self):
         metrics = {"config": self.config,

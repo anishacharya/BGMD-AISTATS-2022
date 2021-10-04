@@ -77,6 +77,67 @@ class ActiveSamplingRobust(TrainPipeline):
 
                 p_bar.update()
 
+                if agg_ix == 0 and batch_ix is not 0:
+                    lr = self.optimizer.param_groups[0]['lr']
+                    if self.C_J is not None:
+                        t0 = time.time()
+                        self.G, self.I_k = self.C_J.compress(G=self.G, lr=lr)
+                        epoch_compression_cost += time.time() - t0
+                        self.metrics["jacobian_residual"].append(self.C_J.normalized_residual)
+
+                    # Gradient aggregation - get aggregated gradient vector
+                    agg_g = self.gar.aggregate(G=self.G, ix=self.I_k, axis=self.C_J.axis if self.C_J else 0)
+                    epoch_gm_iter += self.gar.num_iter
+                    epoch_agg_cost += self.gar.agg_time
+                    # Reset GAR stats
+                    self.gar.agg_time = 0
+                    self.gar.num_iter = 0
+
+                    # Update Model Grads with aggregated g : i.e. compute \tilde(g)
+                    self.optimizer.zero_grad()
+                    dist_grads_to_model(grads=agg_g, learner=self.model)
+                    self.model.to(device)
+
+                    # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
+                    self.optimizer.step()
+                    self.metrics["num_opt_steps"] += 1
+
+                if self.metrics["num_grad_steps"] % self.eval_freq == 0:
+                    train_loss = self.evaluate_classifier(model=self.model,
+                                                          train_loader=self.train_loader,
+                                                          test_loader=self.test_loader,
+                                                          metrics=self.metrics,
+                                                          device=device,
+                                                          epoch=self.epoch,
+                                                          num_epochs=self.num_epochs)
+                    # Stop if diverging
+                    if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
+                        self.epoch = self.num_epochs
+
+                self.epoch += 1
+                if self.lrs is not None:
+                    self.lrs.step()
+
+                self.metrics["epoch_grad_cost"].append(epoch_grad_cost)
+                self.metrics["epoch_agg_cost"].append(epoch_agg_cost)
+                if epoch_gm_iter > 0:
+                    self.metrics["epoch_gm_iter"].append(epoch_gm_iter)
+                if epoch_compression_cost > 0:
+                    # print("Epoch Sparse Approx Cost: {}".format(epoch_sparse_cost))
+                    self.metrics["epoch_compression_cost"].append(epoch_compression_cost)
+
+            # Update Total Complexities
+            self.metrics["total_grad_cost"] = sum(self.metrics["epoch_grad_cost"])
+            self.metrics["total_agg_cost"] = sum(self.metrics["epoch_agg_cost"])
+            self.metrics["total_gm_iter"] = sum(self.metrics["epoch_gm_iter"])
+            self.metrics["total_compression_cost"] = sum(self.metrics["epoch_compression_cost"])
+            self.metrics["total_cost"] = self.metrics["total_grad_cost"] + self.metrics["total_agg_cost"] + \
+                                         self.metrics[
+                                             "total_compression_cost"]
+            if self.metrics["total_gm_iter"] != 0:
+                # Handle Non GM GARs
+                self.metrics["avg_gm_cost"] = self.metrics["total_agg_cost"] / self.metrics["total_gm_iter"]
+
     def run_fed_train(self):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
 

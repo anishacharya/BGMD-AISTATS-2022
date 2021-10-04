@@ -56,9 +56,7 @@ class TrainPipeline:
                                data_config=self.data_config,
                                seed=seed,
                                additional_conf=data_manager.additional_model_conf)
-
         self.criterion = get_loss(loss_fn=self.loss_fn)
-
         self.optimizer = get_optimizer(params=self.model.parameters(),
                                               optimizer_config=self.optimizer_config)
         self.lrs = get_scheduler(optimizer=self.optimizer,

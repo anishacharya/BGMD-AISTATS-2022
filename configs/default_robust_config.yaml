@@ -6,8 +6,6 @@
   {
     "data_set": "mnist",
     "shape":[28,28],
-
-    "val_frac": 0,                    # Fraction of Train Data used for Validation
     "num_labels": 10,                 # Num of Labels in Dataset
     "num_channels": 1,                # Number of channels # in case of CV experiments
 

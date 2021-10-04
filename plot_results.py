@@ -136,7 +136,7 @@ if __name__ == '__main__':
         if x_ax == 'time':
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
         elif x_ax == 'steps':
-            plt.xlabel(r'Number of Gradient Steps', fontsize=10)
+            plt.xlabel(r'Number of Gradient Aggregation Steps', fontsize=10)
         elif x_ax == 'samples':
             plt.xlabel(r'Number of Samples Seen', fontsize=10)
         else:

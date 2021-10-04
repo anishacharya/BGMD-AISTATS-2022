@@ -72,8 +72,8 @@ class TrainPipeline:
         # self.feature_attack_model = get_feature_attack(attack_config=self.feature_attack_config)
         # self.grad_attack_model = get_grad_attack(attack_config=self.grad_attack_config)
 
-    def apply_gar(self):
-        raise NotImplementedError
+    # def apply_gar(self):
+    #     raise NotImplementedError
 
     def evaluate_classifier(self,
                             epoch: int,

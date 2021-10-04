@@ -16,6 +16,7 @@ class VisionDataManager:
 
     def __init__(self, data_config):
         self.data_config = data_config
+        self.additional_model_conf = {}
 
     def download_data(self):
         """ Downloads Data and Apply appropriate Transformations . returns train, test dataset """

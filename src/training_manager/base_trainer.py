@@ -58,7 +58,9 @@ class TrainPipeline:
 
         self.model = get_model(learner_config=self.learner_config,
                                data_config=self.data_config,
-                               seed=seed)
+                               seed=seed,
+                               additional_conf=data_manager.additional_model_conf)
+
         self.client_optimizer = get_optimizer(params=self.model.parameters(),
                                               optimizer_config=self.client_optimizer_config)
         # self.client_lrs = get_scheduler(optimizer=self.client_optimizer,

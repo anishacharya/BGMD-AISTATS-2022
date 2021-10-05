@@ -71,7 +71,7 @@
           {
             "rule": 'active_norm_sampling',                     # None, 'active_norm_sampling', 'random_sampling'
             "axis": "dim",                    # n = client/sample/batch selection ; dim = dimension selection
-            "sampling_fraction": 0.05,         # fraction to be sampled
+            "sampling_fraction": 0.1,         # fraction to be sampled
             "memory_algo": 'ef',              # memory in Jacobian - invoked for jacobian compression rules
           }
       }

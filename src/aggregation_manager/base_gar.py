@@ -44,7 +44,7 @@ class GAR:
         If no weights are supplied then its equivalent to simple average
         """
         if alphas is None:
-            agg_grad = np.mean(stacked_grad, axis=0)
+            agg_grad = np.mean(stacked_grad, axis=0, dtype=stacked_grad.dtype)
         else:
             assert len(alphas) == stacked_grad.shape[0]
             agg_grad = np.matmul(alphas, stacked_grad)

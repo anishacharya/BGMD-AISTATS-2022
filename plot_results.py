@@ -60,7 +60,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
         x = np.arange(len(mean)) * x_freq
 
     elif x_axis == 'steps':
-        x = np.arange(len(result[0][plt_type]))[::plot_freq]
+        x = np.arange(start=1, stop=len(result[0][plt_type])+1)[::plot_freq]
         x *= eval_freq
 
     else:
@@ -132,7 +132,7 @@ if __name__ == '__main__':
         if x_ax == 'time':
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
         elif x_ax == 'steps':
-            plt.xlabel(r'Number of Gradient Aggregation Steps', fontsize=10)
+            plt.xlabel(r'Number of passes over data', fontsize=10)
         elif x_ax == 'samples':
             plt.xlabel(r'Number of Samples Seen', fontsize=10)
         else:
@@ -148,7 +148,7 @@ if __name__ == '__main__':
 
     elif plot_type == 'test_acc':
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
-        plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
+        # plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
         plt.ylabel('Test Accuracy (%)', fontsize=10)
 
     elif plot_type == 'train_acc':

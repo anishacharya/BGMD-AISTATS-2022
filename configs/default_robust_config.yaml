@@ -9,15 +9,15 @@
     "num_labels": 10,                 # Num of Labels in Dataset
     "num_channels": 1,                # Number of channels # in case of CV experiments
 
-    "train_batch_size": 32,           # Mini Batch Size
-    "num_clients": 8,               # Number of mini-batches
+    "train_batch_size": 16,           # Mini Batch Size
+    "num_clients": 32,               # Number of mini-batches
 
     "test_batch_size": 2048,          # Test Batch Size
   },
 
   "training_config":
   {
-    "global_epochs": 10,                 # epochs
+    "global_epochs": 50,                 # epochs
 
     "optimizer_config":
       {
@@ -25,8 +25,8 @@
         "loss_sampler": "top_loss",
         "init_sampling_frac": 0.1,
 
-        "optimizer": "Adam",
-        "lr0": 0.002,
+        "optimizer": "SGD",
+        "lr0": 0.01,
         "momentum": 0.9,
         "reg": 0.00001,
         "nesterov": true,
@@ -46,11 +46,11 @@
       },
     "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "norm_clip",
         "geo_med_config": { "alg": 'vardi', 'eps': 0.00001, 'max_iter': 100 },
         "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
-        "norm_clip_config": { "alpha": 0.5 },
+        "norm_clip_config": { "alpha": 0.1 },
 
         "grad_attack_config":
           {

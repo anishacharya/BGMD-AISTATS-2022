@@ -1,3 +1,6 @@
+# Copyright (c) Anish Acharya.
+# Licensed under the MIT License
+
 from typing import Dict
 
 """

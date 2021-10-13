@@ -1,3 +1,6 @@
+# Copyright (c) Anish Acharya.
+# Licensed under the MIT License
+
 from .grad_attack_models import *
 from .image_corruption_models import *
 from .backdoor import *

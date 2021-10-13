@@ -4,7 +4,7 @@
     "ylim_b": ,
     "ylim_t": ,
     "xlim_l": 0,
-    "xlim_r": 500, #17500,
+    "xlim_r": 300, #17500,
     "smoothen": False,
     "dir": 'result_dumps/fmnist/',
     "plots":

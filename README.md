@@ -26,7 +26,7 @@ problems, with non-asymptotic convergence rates comparable to the SGD with GM.
 
 Citation  
 ------------
-Kindly cite the work as:    
+If you find this useful for your research consider giving a :star2: and citing the following article:     
 ```
 @article{acharya2021robust,
   title={Robust Training in High Dimensions via Block Coordinate Geometric Median Descent},

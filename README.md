@@ -15,11 +15,6 @@ problems, with non-asymptotic convergence rates comparable to the SGD with GM.
 ![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_algo.png)
 
 ![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_fig1.png)
-![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_fig2.png)
-![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_fig3.png)
-
-
-![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_conv_table.png)
 
 ![](https://github.com/anishacharya/BGMD/blob/main/readme_utils/bgmd_theoru.png)
 

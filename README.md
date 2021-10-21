@@ -21,7 +21,7 @@ problems, with non-asymptotic convergence rates comparable to the SGD with GM.
 
 Citation  
 ------------
-If you find this useful for your research consider giving a :star2: and citing the following article:     
+If you find the algorithm useful for your research consider citing the following article:     
 ```
 @article{acharya2021robust,
   title={Robust Training in High Dimensions via Block Coordinate Geometric Median Descent},
@@ -29,4 +29,9 @@ If you find this useful for your research consider giving a :star2: and citing t
   journal={arXiv preprint arXiv:2106.08882},
   year={2021}
 }
+```
+
+If you find the code useful for your research consider giving a :star2: and citing the following:
+```
+@software{Acharya_BGMD_2021,author = {Acharya, Anish},doi = {10.5281/zenodo.1234},month = {10},title = {{BGMD}},url = {https://github.com/anishacharya/BGMD},version = {1.0.0},year = {2021}}
 ```
